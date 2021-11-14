@@ -1,4 +1,4 @@
-package ru.home.builder;
+package ru.home.builder_1;
 
 public class Person {
     private String firstName;
