@@ -8,9 +8,6 @@ public class MyArrayList<T> {
         this.arr = new Object[10];
     }
 
-
- //   List<String> list = new ArrayList<>();
-
     public void add(T t){
         if(count >= arr.length-1){
             upsizeArr();

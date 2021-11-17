@@ -25,6 +25,12 @@ public class Main {
             System.out.println(iterator2.next());
         }
 
+        System.out.println();
+        IteratorRandom random = new IteratorRandom();
+        System.out.println(random.next());
+        System.out.println(random.next());
+        System.out.println(random.next());
+
 
     }
 }
