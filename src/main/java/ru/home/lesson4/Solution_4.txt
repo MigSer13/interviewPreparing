@@ -1,0 +1,84 @@
+CREATE TABLE #quantity (
+ title VARCHAR(100),
+ quantity_visitors INTEGER  )
+;
+SELECT
+  movies_visitors.title,
+  movies_visitors.quantity_visitors
+INTO #quantity
+FROM (SELECT
+    movies.title,
+    COUNT(tickets.ticket_number) as quantity_visitors
+  FROM sessions as sessions
+  LEFT JOIN issued_ticket_numbers as tickets
+  ON tickets.sessions_id = sessions.ids_idm
+    INNER JOIN movies as movies
+    ON movies.id = sessions.movies_id
+  GROUP BY
+    movies.title
+    ) as movies_visitors
+;
+
+CREATE TABLE #sums (
+ title VARCHAR(100),
+ sum DECIMAL(15,2) )
+;
+SELECT
+  movies_visitors.title,
+  SUM(movies_visitors.price * movies_visitors.quantity_visitors_session) as sum
+INTO #sums
+FROM (SELECT
+    movies.title,
+    sessions.price,
+    COUNT(tickets.ticket_number) as quantity_visitors_session
+  FROM sessions as sessions
+  LEFT JOIN issued_ticket_numbers as tickets
+  ON tickets.sessions_id = sessions.ids_idm
+    INNER JOIN movies as movies
+    ON movies.id = sessions.movies_id
+  GROUP BY
+    movies.title,
+    sessions.price
+    ) as movies_visitors
+GROUP BY
+   movies_visitors.title
+;
+
+CREATE TABLE #quantity_avg (
+ title VARCHAR(100),
+ sum DECIMAL(15,2) )
+;
+SELECT
+  movies_visitors.title,
+  movies_visitors.avg_visitors_session
+INTO #quantity_avg
+FROM (SELECT
+    movies.title,
+    sessions.session,
+    AVG(tickets.ticket_number) as avg_visitors_session
+  FROM sessions as sessions
+  LEFT JOIN issued_ticket_numbers as tickets
+  ON tickets.sessions_id = sessions.ids_idm
+    INNER JOIN movies as movies
+    ON movies.id = sessions.movies_id
+  GROUP BY
+    movies.title,
+    sessions.session
+    ) as movies_visitors
+;
+
+SELECT
+    quantity.title,
+    quantity.quantity_visitors,
+    sums.sum,
+    avg.avg_visitors_session
+FROM
+    #quantity as quantity
+    LEFT JOIN #sums as sum
+    ON sum.title = quantity.title
+    LEFT JOIN #quantity_avg as avg
+    ON avg.title = quantity.title
+ORDER BY
+    sums.sum DESC
+GROUP BY
+    sum WITH ROLLUP

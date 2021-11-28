@@ -1,0 +1,59 @@
+2) можно конечно добавить избыточное поле ""duration"" в таблицу ""sessions"",
+но не знаю, насколько это применяется на практике.
+CREATE TABLE #t1 (
+ title VARCHAR(100),
+   start_time DATETIME,
+   end_time DATETIME,
+ duration INTEGER  )
+;
+SELECT
+  m1.title,
+  m1.start_time,
+  m1.duration,
+  ADDDATE(m1.start_time, INTERVAL m1.duration MINUTE) as end_time
+INTO #t1
+FROM (SELECT
+    movies.title,
+    sessions.start_time,
+    movies.duration
+   FROM sessions as sessions
+   INNER JOIN movies as movies
+       ON movies.id = sessions.movies_id) as m1
+;
+
+CREATE TABLE #t2 (
+ title VARCHAR(100),
+   start_time DATETIME,
+   duration  INTEGER  )
+;
+SELECT
+  m2.title,
+  m2.start_time,
+  m2.duration,
+  ADDDATE(m2.start_time, INTERVAL m2.duration MINUTE) as end_time
+INTO #t2
+FROM (SELECT
+    movies.title,
+    sessions.start_time,
+    movies.duration
+   FROM sessions as sessions
+   INNER JOIN movies as movies
+       ON movies.id = sessions.movies_id) as m2
+;
+
+SELECT
+    t1.title,
+    t1.start_time,
+    t1.duration,
+    t2.title,
+    t2.start_time,
+    t2.duration
+FROM #t1 as t1
+ LEFT JOIN #t2 as t2
+ ON t1.title <> t2.title
+ AND t2.start_time BETWEEN t1.start_time AND t1.end_time
+WHERE
+     t2.title <> NULL
+ORDER BY
+    t1.start_time
+;

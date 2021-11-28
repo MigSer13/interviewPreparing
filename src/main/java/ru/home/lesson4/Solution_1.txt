@@ -1,0 +1,117 @@
+1) create table movies (
+       id        INTEGER not null AUTO_INCREMENT PRIMARY KEY,
+       title     VARCHAR(100) not null,
+       duration  INTEGER not null  );
+
+   insert into movies (title, duration)
+   values ('Терминатор', 120),
+          ('Маска', 95),
+          ('Бриллиантовая рука', 90),
+          ('Приключения Тоби', 60);
+
+   create table sessions (
+       id           INTEGER not null AUTO_INCREMENT ,
+       movies_id    INTEGER   references movies (id),
+       session      INTEGER not null,
+       start_time   DATETIME not null,
+       price        DECIMAL(15,2) not null,
+       CONSTRAINT ids_idm PRIMARY KEY (id,  movies_id)  );
+
+   insert into sessions (movies_id, session, start_time, price)
+   values
+         (1, 1,  timestamp '25.11.2021  10:00:00', 250),
+         (1, 2,  timestamp '25.11.2021  14:00:00', 300),
+         (1, 3,  timestamp '25.11.2021  20:00:00', 400),
+         (2, 1,  timestamp '25.11.2021  11:00:00', 220),
+         (2, 2,  timestamp '25.11.2021  16:00:00', 280),
+         (2, 3,  timestamp '25.11.2021  21:00:00', 350),
+         (3, 1,  timestamp '25.11.2021  12:00:00', 200),
+         (3, 2,  timestamp '25.11.2021  17:00:00', 230),
+         (3, 3,  timestamp '25.11.2021  21:00:00', 270),
+         (4, 1,  timestamp '25.11.2021  09:00:00', 210),
+         (4, 2,  timestamp '25.11.2021  13:00:00', 240),
+         (4, 3,  timestamp '25.11.2021  18:00:00', 300)  ;
+
+   create table issued_ticket_numbers (
+       id             INTEGER not null AUTO_INCREMENT PRIMARY KEY,
+       ticket_number  INTEGER not null,
+       sessions_id    INTEGER not null,
+       FOREIGN KEY (sessions_id) REFERENCES sessions (movies_id) );
+
+   insert into issued_ticket_numbers (sessions_id, ticket_number)
+   values  (11, 10),
+    (11, 30),
+    (11, 50),
+    (12, 32),
+    (12, 44),
+    (12, 65),
+    (12, 76),
+    (13, 56),
+    (13, 43),
+    (13, 87),
+    (13, 67),
+    (13, 54),
+    (21, 43),
+    (21, 54),
+    (21, 76),
+    (21, 87),
+    (21, 98),
+    (22, 65),
+    (22, 77),
+    (22, 33),
+    (22, 43),
+    (23, 21),
+    (23, 32),
+    (23, 43),
+    (23, 54),
+    (23, 65),
+    (23, 78),
+    (31, 33),
+    (31, 76),
+    (31, 54),
+    (32, 11),
+    (32, 44),
+    (32, 77),
+    (33, 34),
+    (33, 78),
+    (33, 48),
+    (41, 1),
+    (41, 57),
+    (41, 54),
+    (42, 87),
+    (42, 99),
+    (42, 65),
+    (42, 45),
+    (43, 76),
+    (43, 34),
+    (43, 55),
+    (43, 88),
+    (43, 5) ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

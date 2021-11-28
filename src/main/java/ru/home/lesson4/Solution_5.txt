@@ -1,0 +1,131 @@
+CREATE TABLE #period_9_15 (
+ sum DECIMAL(15,2),
+ quantity_visitors INTEGER  )
+;
+SELECT
+  period_9_15.period,
+  SUM(period_9_15.price * period_9_15.quantity_visitors) as sum,
+  COUNT(period_15_18.quantity_visitors) as quantity_visitors
+INTO #period_9_15
+FROM (SELECT
+    '9_15' as period,
+    sessions.price,
+    COUNT(tickets.ticket_number) as quantity_visitors
+  FROM sessions as sessions
+        LEFT JOIN issued_ticket_numbers as tickets
+        ON tickets.sessions_id = sessions.ids_idm
+  WHERE
+        TIME(sessions.start_time) BETWEEN TIME('2001-01-01 09:00:00') AND TIME('2001-01-01 15:00:00')
+  GROUP BY
+    sessions.price,
+    period
+    ) as period_9_15
+GROUP BY
+   period_9_15.period
+;
+
+CREATE TABLE #period_15_18 (
+ sum DECIMAL(15,2),
+ quantity_visitors INTEGER  )
+;
+SELECT
+  period_15_18.period,
+  SUM(period_15_18.price * period_15_18.quantity_visitors) as sum,
+  COUNT(period_15_18.quantity_visitors) as quantity_visitors
+INTO #period_15_18
+FROM (SELECT
+    '15_18' as period,
+    sessions.price,
+    COUNT(tickets.ticket_number) as quantity_visitors
+  FROM sessions as sessions
+        LEFT JOIN issued_ticket_numbers as tickets
+        ON tickets.sessions_id = sessions.ids_idm
+  WHERE
+        TIME(sessions.start_time) BETWEEN TIME('2001-01-01 15:00:00') AND TIME('2001-01-01 18:00:00')
+  GROUP BY
+    sessions.price,
+    period
+    ) as period_15_18
+GROUP BY
+   period_15_18.period
+;
+
+CREATE TABLE #period_18_21 (
+ sum DECIMAL(15,2),
+ quantity_visitors INTEGER  )
+;
+SELECT
+  period_18_21.period,
+  SUM(period_18_21.price * period_18_21.quantity_visitors) as sum,
+  COUNT(period_18_21.quantity_visitors) as quantity_visitors
+INTO #period_18_21
+FROM (SELECT
+    '18_21' as period,
+    sessions.price,
+    COUNT(tickets.ticket_number) as quantity_visitors
+  FROM sessions as sessions
+        LEFT JOIN issued_ticket_numbers as tickets
+        ON tickets.sessions_id = sessions.ids_idm
+  WHERE
+        TIME(sessions.start_time) BETWEEN TIME('2001-01-01 18:00:00') AND TIME('2001-01-01 21:00:00')
+  GROUP BY
+    sessions.price,
+    period
+    ) as period_18_21
+GROUP BY
+   period_18_21.period
+;
+
+CREATE TABLE #period_21_00 (
+ sum DECIMAL(15,2),
+ quantity_visitors INTEGER  )
+;
+SELECT
+  period_21_00.period,
+  SUM(period_21_00.price * period_21_00.quantity_visitors) as sum,
+  COUNT(period_21_00.quantity_visitors) as quantity_visitors
+INTO #period_21_00
+FROM (SELECT
+    '21_00' as period,
+    sessions.price,
+    COUNT(tickets.ticket_number) as quantity_visitors
+  FROM sessions as sessions
+        LEFT JOIN issued_ticket_numbers as tickets
+        ON tickets.sessions_id = sessions.ids_idm
+  WHERE
+        TIME(sessions.start_time) BETWEEN TIME('2001-01-01 21:00:00') AND TIME('2001-01-01 23:59:59')
+  GROUP BY
+    sessions.price,
+    period
+    ) as period_21_00
+GROUP BY
+   period_21_00.period
+;
+
+    SELECT
+        period_9_15.period,
+        period_9_15.quantity_visitors,
+        period_9_15.sum
+    FROM
+        #period_9_15 as period_9_15
+UNION
+    SELECT
+        period_15_18.period,
+        period_15_18.quantity_visitors,
+        period_15_18.sum
+    FROM
+        #period_15_18 as period_15_18
+UNION
+    SELECT
+        period_18_21.period,
+        period_18_21.quantity_visitors,
+        period_18_21.sum
+    FROM
+        #period_18_21 as period_18_21
+UNION
+    SELECT
+        period_21_00.period,
+        period_21_00.quantity_visitors,
+        period_21_00.sum
+    FROM
+        #period_21_00 as period_21_00
