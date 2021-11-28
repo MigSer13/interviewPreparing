@@ -80,7 +80,6 @@ public class OneLinkedList<T> {
                 break;
             }
         }
-
         return false;
     }
 
