@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import java.util.List;
 
 
-public class App {
+public class AppHibernate {
     public static void main(String[] args) {
         Session currentSession = MySessionFactory.getSessionFactory().getCurrentSession();
         currentSession.beginTransaction();

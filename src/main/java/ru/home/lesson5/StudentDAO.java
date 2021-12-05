@@ -1,4 +1,4 @@
-package lesson5;
+package ru.home.lesson5;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
