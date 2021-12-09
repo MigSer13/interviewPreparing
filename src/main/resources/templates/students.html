@@ -26,12 +26,12 @@
             <td th:text="${student.name} "></td>
             <td th:text="${student.age} "></td>
             <td>
-                <a class="btn btn-primary" th:href="@{'/delete/' + ${student.id}}">delete</a>
+                <a class="btn btn-primary" th:href="@{'/students/delete/' + ${student.id}}">delete</a>
             </td>
         </tr>
         </tbody>
     </table>
-    <a class="btn btn-primary" th:href="@{/add}">add new student</a>
+    <a class="btn btn-primary" th:href="@{/students/add}">add new student</a>
 </div>
 </body>
 </html>

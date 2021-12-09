@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 public class StudentController {
     private StudentRepository studentRepository;
 
@@ -20,6 +20,11 @@ public class StudentController {
         return "students";
     }
 
+    @GetMapping("/students/add")
+    public String add(Model model) {
+        return "addForm";
+    }
+
     @PostMapping("/students/add")
     public String add(Model model, @RequestParam String name, @RequestParam int age){
         Student student = new Student();
@@ -30,13 +35,13 @@ public class StudentController {
             model.addAttribute("answer", "Something went wrong...");
             return "addForm";
         }
-        return "redirect/students";
+        return "redirect:/students";
     }
 
     @GetMapping("/students/delete/{id}")
-    public String delete(@RequestParam long id){
+    public String delete(Model model, @PathVariable long id){
         studentRepository.deleteById(id);
-        return "redirect/students";
+        return "redirect:/students";
     }
 }
 
